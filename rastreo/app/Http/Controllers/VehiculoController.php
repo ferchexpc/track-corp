@@ -55,7 +55,8 @@ class VehiculoController extends Controller
         $departamentos=DB::select("select 
                     d.id_departamento,
                     d.nombre_departamento
-                    from ras.tdepartamento d ");
+                    from ras.tdepartamento d
+                    where estado='activo' ");
 
         $id_departamento = 0;
         if($id!=0){
