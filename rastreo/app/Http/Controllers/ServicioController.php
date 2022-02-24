@@ -126,7 +126,8 @@ class ServicioController extends Controller
         bateria_vehiculo,
         encendido,
         evento,
-        tiempo_parqueo
+        tiempo_parqueo,
+        tipo_dispositivo
         from ras.f_get_parqueos(?,?,?) ",[$request->id_vehiculos,$request->fecha_inicio,$request->fecha_fin]);
 
         $arrayParametros=[
