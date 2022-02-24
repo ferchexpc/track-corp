@@ -14,7 +14,7 @@ class ParametrosController extends Controller{
     public function lista_departamento(Request $request)
     {
         $departamentos=DB::select("select id_departamento, nombre_departamento, fecha_reg::date, fecha_mod::date, id_usuario_reg, id_usuario_mod
-        from ras.tdepartamento");
+        from ras.tdepartamento where estado = 'activo'");
 
         $arrayParametros=[
             'departamentos'=>$departamentos
