@@ -101,11 +101,11 @@ class ServicioController extends Controller
                                     p.devicetime,
                                     p.course,
                                     p.attributes,
-                                    coalesce( (p.attributes::json->''power''), (p.attributes::json->''batteryLevel'') )::varchar as bateria_vehiculo
+                                    coalesce( (p.attributes::json->?), (p.attributes::json->?) )::varchar as bateria_vehiculo
                                     from ras.tvehiculo v
                                     inner join public.tc_devices d on v.uniqueid=d.uniqueid
                                     inner join public.tc_positions p on p.id=d.positionid
-                                    where v.id_vehiculo in(".$id_vehiculos.")  ");
+                                    where v.id_vehiculo in(".$id_vehiculos.")  ",["power","batterylevel"]);
 
         $arrayParametros=[
             'lista_monitoreo_tiempo_real'=>$lista_monitoreo_tiempo_real
