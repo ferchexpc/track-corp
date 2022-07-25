@@ -380,9 +380,16 @@ export class MonitoreoVehiculoComponent implements OnInit {
         this.map.fitBounds(this.polylines.getBounds());
       }
       if(this.contador_zoom_mapa==0){
-        this.map.setView([lat, lon], 16);  
+        if(linea_rutas.length==1){
+          this.map.setView([lat, lon], 16);
+        }else{
+          this.map.setView([lat, lon], 6);
+        }  
       }else{
-        this.map.setView([lat, lon]);  
+        if(linea_rutas.length==1){
+          this.map.setView([lat, lon]);
+        }
+          
       }
       this.contador_zoom_mapa++;
       
