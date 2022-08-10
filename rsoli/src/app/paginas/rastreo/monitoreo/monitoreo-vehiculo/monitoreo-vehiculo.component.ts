@@ -4,8 +4,10 @@ import 'leaflet-rotatedmarker';
 import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { MonitoreoService } from '../monitoreo.service';
 import Swal from'sweetalert2';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { formatDate } from '@angular/common';
+
+
+
 
 @Component({
   selector: 'app-monitoreo-vehiculo',
@@ -38,6 +40,9 @@ export class MonitoreoVehiculoComponent implements OnInit {
   contador_zoom_mapa:number=0;
 
   visibleSidebar1: any;
+
+  //boton input mapa search
+
 
   constructor(
     private primengConfig: PrimeNGConfig,
@@ -72,7 +77,7 @@ export class MonitoreoVehiculoComponent implements OnInit {
 
         var  osm, controlCapas;
 
-        this.map = L.map('map', {
+        this.map = L.map('map1', {
           center: [-16.6574403011881, -64.95190911770706],
           zoom: 6
         });
@@ -138,8 +143,6 @@ export class MonitoreoVehiculoComponent implements OnInit {
         controlEscala.addTo(this.map);
 
 
-
-    
 
   }
   initMap2(){
@@ -274,6 +277,7 @@ export class MonitoreoVehiculoComponent implements OnInit {
     let icon:any;
 
     for (let indice of marcadores.lista_monitoreo_tiempo_real ){
+      
         contador++;
         if(contador==1){
 
@@ -282,7 +286,7 @@ export class MonitoreoVehiculoComponent implements OnInit {
               icon: L.icon({
                 iconSize: [25, 31],
                 iconAnchor: [12, 31],
-                iconUrl: './../../../assets/icono/marcadores/ubicacion/ubi-azul.svg',
+                iconUrl: './assets/icono/marcadores/ubicacion/ubi-azul.svg',
               })
             };
           }else{
@@ -290,7 +294,7 @@ export class MonitoreoVehiculoComponent implements OnInit {
               icon: L.icon({
                 iconSize: [25, 31],
                 iconAnchor: [12, 31],
-                iconUrl: './../../../assets/icono/marcadores/ubicacion/ubi-rojo.svg',
+                iconUrl: './assets/icono/marcadores/ubicacion/ubi-rojo.svg',
               })
             };
           }
@@ -301,7 +305,7 @@ export class MonitoreoVehiculoComponent implements OnInit {
               icon: L.icon({
                 iconSize: [25, 31],
                 iconAnchor: [12, 31],
-                iconUrl: './../../../assets/icono/marcadores/ubicacion/ubi-azul.svg',
+                iconUrl: './assets/icono/marcadores/ubicacion/ubi-azul.svg',
               })
             };
           }else{
@@ -312,7 +316,7 @@ export class MonitoreoVehiculoComponent implements OnInit {
                   // iconAnchor: [7, 3],
                   iconSize: [8, 10],
                   iconAnchor: [4, 3],
-                  iconUrl: './../../../assets/icono/marcadores/flecha/flecha-azul2.svg',
+                  iconUrl: './assets/icono/marcadores/flecha/flecha-azul2.svg',
                 }),
                 rotationAngle:indice.course
               };
@@ -322,26 +326,21 @@ export class MonitoreoVehiculoComponent implements OnInit {
                 icon: L.icon({
                   iconSize: [25, 31],
                   iconAnchor: [12, 31],
-                  iconUrl: './../../../assets/icono/marcadores/ubicacion/ubi-amarillo.svg'
+                  iconUrl: './assets/icono/marcadores/ubicacion/ubi-amarillo.svg'
                 })
               };
             }
 
           }
         }
-        let tipo_vehiculo = '';
-        if(indice.tipo_dispositivo=='vehiculo'){
-          tipo_vehiculo=' Volt.'
-        }else{
-          tipo_vehiculo=' %'
-        }
+
         if(indice.tiempo_parqueo=='00:00:00'){
           this.marker = L.marker([indice.latitude, indice.longitude], icon).addTo(this.map);
           this.marker.bindPopup("<div font-size: 10px; z-index:1000' > <div style='text-align: center;' > <b>DATOS DEL MOTORIZADO</b></div><br/>"+
           "<b>Placa :</b>  "+indice.placa+
           " <br> <b>Fecha :</b>  "+indice.devicetime+
           " <br> <b>Velocidad :</b>  "+parseFloat(indice.speed).toFixed(2)+" Km/h"+
-          " <br> <b>Bateria :</b>  "+parseFloat(indice.bateria_vehiculo).toFixed(2)+tipo_vehiculo+
+          " <br> <b>Bateria :</b>  "+parseFloat(indice.bateria_vehiculo).toFixed(2)+" Volt."+
           " <br> <b>Ubicación :</b> </br>"+indice.address+ 
           "<div> ");
         }else{
@@ -350,7 +349,7 @@ export class MonitoreoVehiculoComponent implements OnInit {
           "<b>Placa :</b>  "+indice.placa+
           " <br> <b>Fecha :</b>  "+indice.devicetime+
           " <br> <b>Velocidad :</b>  "+parseFloat(indice.speed).toFixed(2)+" Km/h"+
-          " <br> <b>Bateria :</b>  "+parseFloat(indice.bateria_vehiculo).toFixed(2)+tipo_vehiculo+
+          " <br> <b>Bateria :</b>  "+parseFloat(indice.bateria_vehiculo).toFixed(2)+" Volt."+
           " <br> <b>Tiempo parqueo :</b>  "+indice.tiempo_parqueo+
           " <br> <b>Ubicación :</b> </br>"+indice.address+ 
           "<div> ");
@@ -361,6 +360,8 @@ export class MonitoreoVehiculoComponent implements OnInit {
         linea_rutas.push(this.marker.getLatLng());
         lat=indice.latitude;
         lon=indice.longitude;
+
+
     }
 
     if(this.polylines){
@@ -380,16 +381,9 @@ export class MonitoreoVehiculoComponent implements OnInit {
         this.map.fitBounds(this.polylines.getBounds());
       }
       if(this.contador_zoom_mapa==0){
-        if(linea_rutas.length==1){
-          this.map.setView([lat, lon], 16);
-        }else{
-          this.map.setView([lat, lon], 6);
-        }  
+        this.map.setView([lat, lon], 16);  
       }else{
-        if(linea_rutas.length==1){
-          this.map.setView([lat, lon]);
-        }
-          
+        this.map.setView([lat, lon]);  
       }
       this.contador_zoom_mapa++;
       
@@ -398,8 +392,11 @@ export class MonitoreoVehiculoComponent implements OnInit {
       this.messageService.add({severity: 'info', summary: 'Mensaje', detail: 'No existe datos en la fecha' });
     }
 
-
-
+    //solucion a problema de boton close de popop
+    document.querySelector('.leaflet-pane.leaflet-popup-pane')!.addEventListener('click', event => {
+      event.preventDefault();
+    });
+    
   }
   TiempoInterval(){
       this.id_interval = setInterval(() => {

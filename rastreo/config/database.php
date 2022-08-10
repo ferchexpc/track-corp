@@ -66,11 +66,11 @@ return [
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
-            'host' => env('134.122.21.117', '134.122.21.117'),
+            'host' => env('144.126.133.36', '144.126.133.36'),
             'port' => env('DB_PORT', '5432'),
             'database' => env('bd_rastreo', 'bd_rastreo'),
             'username' => env('postgres', 'postgres'),
-            'password' => env('post7748', 'post7748'),
+            'password' => env('postgres', 'postgres'),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
