@@ -230,6 +230,7 @@ export class MonitoreoVehiculoComponent implements OnInit {
     }
   }
   aplicar_filtros(){
+    this.map.setView([-16.6574403011881, -64.95190911770706], 6);
     this.contador_zoom_mapa=0;
     this.visibleSidebar1=false;
     if(this.vehiculo_seleccionado.length==0){
@@ -322,13 +323,23 @@ export class MonitoreoVehiculoComponent implements OnInit {
               };
             }
             else{
-              icon = {
-                icon: L.icon({
-                  iconSize: [25, 31],
-                  iconAnchor: [12, 31],
-                  iconUrl: './assets/icono/marcadores/ubicacion/ubi-amarillo.svg'
-                })
-              };
+              		if( String(this.tipo_monitoreo_seleccionado) =="tiempo_real"){
+                	icon = {
+                  	icon: L.icon({
+                    	iconSize: [25, 31],
+                    	iconAnchor: [12, 31],
+                    	iconUrl: './assets/icono/marcadores/ubicacion/ubi-azul.svg',
+                  	})
+                	};
+              	}else{
+                	icon = {
+                  	icon: L.icon({
+                    	iconSize: [25, 31],
+                    	iconAnchor: [12, 31],
+                    	iconUrl: './assets/icono/marcadores/ubicacion/ubi-amarillo.svg'
+                  	})
+                	};
+              	}
             }
 
           }
@@ -368,35 +379,36 @@ export class MonitoreoVehiculoComponent implements OnInit {
       this.polylines.removeFrom(this.map);
     }
 
-    if(linea_rutas.length>0){
+if(linea_rutas.length>0){
 
       
       if(this.tipo_monitoreo_seleccionado.code!="tiempo_real"){
         this.polylines = L.polyline(linea_rutas, {
           color: '#58ACFA', // color de linea
-          // weight: 7, // grosor de lÃ­nea
-          weight: 6, // grosor de lÃ­nea
+          // weight: 7, // grosor de línea
+          weight: 6, // grosor de línea
         }).addTo(this.map);
         
         this.map.fitBounds(this.polylines.getBounds());
       }
       if(this.contador_zoom_mapa==0){
-        this.map.setView([lat, lon], 16);  
+        if(linea_rutas.length==1){
+          this.map.setView([lat, lon], 16);
+        }else{
+          this.map.setView([lat, lon], 6);
+        }  
       }else{
-        this.map.setView([lat, lon]);  
+        if(linea_rutas.length==1){
+          this.map.setView([lat, lon]);
+        }
+          
       }
       this.contador_zoom_mapa++;
       
     }else{
       this.BorrarToast();
       this.messageService.add({severity: 'info', summary: 'Mensaje', detail: 'No existe datos en la fecha' });
-    }
-
-    //solucion a problema de boton close de popop
-    document.querySelector('.leaflet-pane.leaflet-popup-pane')!.addEventListener('click', event => {
-      event.preventDefault();
-    });
-    
+    }    
   }
   TiempoInterval(){
       this.id_interval = setInterval(() => {
