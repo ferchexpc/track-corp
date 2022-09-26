@@ -70,7 +70,7 @@ return [
             'port' => env('DB_PORT', '5432'),
             'database' => env('bd_rastreo', 'bd_rastreo'),
             'username' => env('postgres', 'postgres'),
-            'password' => env('postgres', 'postgres'),
+            'password' => env('Fabianita4.7.2010', 'Fabianita4.7.2010'),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
